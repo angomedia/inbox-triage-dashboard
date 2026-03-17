@@ -6,6 +6,6 @@ if git diff --quiet index.html 2>/dev/null; then
   exit 0
 fi
 
-git add index.html
-git commit -m "Triage update: $(date +%Y-%m-%d)"
+git add -A
+git commit -m "Triage update: $(date '+%Y-%m-%d %I:%M %p')"
 git push origin main
