@@ -4,259 +4,288 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inbox Triage — March 16, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #f0f2f5; color: #1a1a2e; line-height: 1.5; }
-  .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #fff; padding: 28px 24px; }
-  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
-  .header .subtitle { font-size: 13px; color: #a0aec0; margin-bottom: 16px; }
-  .stats { display: flex; flex-wrap: wrap; gap: 12px; }
-  .stat { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 12px 18px; min-width: 130px; }
-  .stat .num { font-size: 26px; font-weight: 700; }
-  .stat .label { font-size: 11px; color: #a0aec0; text-transform: uppercase; letter-spacing: 0.5px; }
-  .container { max-width: 960px; margin: 0 auto; padding: 20px 16px 40px; }
-  .card { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px; overflow: hidden; }
-  .card-header { padding: 14px 20px; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: #fff; display: flex; align-items: center; gap: 8px; }
-  .card-body { padding: 0; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #0f0f13; color: #e4e4e7; line-height: 1.6; min-height: 100vh; }
+
+  /* Header */
+  .header { background: linear-gradient(160deg, #18181b 0%, #1e1b4b 50%, #312e81 100%); padding: 32px 24px 28px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .header-inner { max-width: 1100px; margin: 0 auto; }
+  .header h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; color: #fff; }
+  .header h1 span { background: linear-gradient(135deg, #a78bfa, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .header .subtitle { font-size: 13px; color: #71717a; margin-top: 4px; margin-bottom: 20px; }
+  .stats { display: flex; flex-wrap: wrap; gap: 10px; }
+  .stat { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 14px 20px; min-width: 140px; backdrop-filter: blur(10px); }
+  .stat .num { font-size: 28px; font-weight: 700; letter-spacing: -1px; }
+  .stat .label { font-size: 10px; color: #71717a; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  .stat-red .num { color: #f87171; }
+  .stat-blue .num { color: #818cf8; }
+  .stat-green .num { color: #34d399; }
+  .stat-white .num { color: #e4e4e7; }
+
+  /* Container */
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  /* Cards */
+  .card { background: #18181b; border: 1px solid #27272a; border-radius: 16px; margin-bottom: 16px; overflow: hidden; transition: border-color 0.2s; }
+  .card:hover { border-color: #3f3f46; }
+  .card-header { padding: 14px 20px; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.8px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #27272a; }
+  .card-header .count { font-size: 11px; background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 20px; font-weight: 500; }
+
+  .urgent .card-header { background: rgba(239,68,68,0.08); color: #f87171; }
+  .waiting-me .card-header { background: rgba(245,158,11,0.08); color: #fbbf24; }
+  .waiting-them .card-header { background: rgba(52,211,153,0.08); color: #34d399; }
+  .brand .card-header { background: rgba(129,140,248,0.08); color: #818cf8; }
+  .outreach .card-header { background: rgba(168,85,247,0.08); color: #c084fc; }
+  .notification .card-header { background: rgba(113,113,122,0.08); color: #a1a1aa; }
+  .skip .card-header { background: rgba(63,63,70,0.08); color: #71717a; }
+
+  /* Tables */
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th { text-align: left; padding: 10px 16px; background: #f7f8fa; font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; color: #666; border-bottom: 1px solid #eee; }
-  td { padding: 12px 16px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+  th { text-align: left; padding: 10px 16px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: #52525b; background: rgba(255,255,255,0.02); border-bottom: 1px solid #27272a; font-weight: 600; }
+  td { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: top; color: #a1a1aa; }
   tr:last-child td { border-bottom: none; }
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; margin-right: 4px; }
-  .badge-red { background: #fee2e2; color: #dc2626; }
-  .badge-green { background: #dcfce7; color: #16a34a; }
-  .badge-blue { background: #dbeafe; color: #2563eb; }
-  .badge-yellow { background: #fef9c3; color: #a16207; }
-  .badge-purple { background: #f3e8ff; color: #7c3aed; }
-  .badge-gray { background: #f3f4f6; color: #6b7280; }
-  .badge-orange { background: #ffedd5; color: #c2410c; }
-  .deadline { color: #dc2626; font-weight: 700; }
-  .money { color: #16a34a; font-weight: 700; }
-  .urgent-header { background: #dc2626; }
-  .waiting-me-header { background: #d97706; }
-  .waiting-them-header { background: #16a34a; }
-  .brand-header { background: #2563eb; }
-  .outreach-header { background: #7c3aed; }
-  .notification-header { background: #6b7280; }
-  .skip-header { background: #9ca3af; }
-  .skip-body { padding: 16px 20px; font-size: 13px; color: #666; }
-  @media (max-width: 640px) {
-    .stats { flex-direction: column; }
-    .stat { min-width: auto; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  td strong { color: #e4e4e7; font-weight: 600; }
+
+  /* Badges */
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 10px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; margin: 2px 2px; }
+  .badge-red { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+  .badge-green { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.2); }
+  .badge-blue { background: rgba(129,140,248,0.12); color: #818cf8; border: 1px solid rgba(129,140,248,0.2); }
+  .badge-yellow { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
+  .badge-purple { background: rgba(192,132,252,0.12); color: #c084fc; border: 1px solid rgba(192,132,252,0.2); }
+  .badge-gray { background: rgba(161,161,170,0.1); color: #a1a1aa; border: 1px solid rgba(161,161,170,0.15); }
+  .badge-orange { background: rgba(251,146,60,0.12); color: #fb923c; border: 1px solid rgba(251,146,60,0.2); }
+
+  .deadline { color: #f87171; font-weight: 700; }
+  .money { color: #34d399; font-weight: 700; }
+  .email { font-size: 11px; color: #52525b; font-weight: 400; }
+  .skip-body { padding: 16px 20px; font-size: 13px; color: #52525b; line-height: 1.7; }
+  .skip-body strong { color: #71717a; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header { padding: 24px 16px 20px; }
+    .header h1 { font-size: 20px; }
+    .stats { gap: 8px; }
+    .stat { min-width: 0; flex: 1; padding: 10px 14px; }
+    .stat .num { font-size: 22px; }
     table { font-size: 12px; }
-    th, td { padding: 8px 10px; }
-    .header h1 { font-size: 18px; }
+    th, td { padding: 10px 12px; }
+    .card { border-radius: 12px; }
+    /* Stack brand table on mobile */
+    .brand table th:nth-child(n+5),
+    .brand table td:nth-child(n+5) { display: none; }
   }
+
+  /* Timestamp footer */
+  .footer { text-align: center; padding: 20px; font-size: 11px; color: #3f3f46; }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>Inbox Triage — March 16, 2026</h1>
-  <div class="subtitle">The Tech Girl / Ango Media LLC — Daily Dashboard</div>
-  <div class="stats">
-    <div class="stat"><div class="num">45</div><div class="label">Total Emails</div></div>
-    <div class="stat"><div class="num" style="color:#f87171">5</div><div class="label">Need Attention</div></div>
-    <div class="stat"><div class="num" style="color:#60a5fa">7</div><div class="label">Brand Pitches</div></div>
-    <div class="stat"><div class="num" style="color:#34d399">3</div><div class="label">Pending Payments</div></div>
+  <div class="header-inner">
+    <h1><span>Inbox Triage</span> — March 16, 2026</h1>
+    <div class="subtitle">The Tech Girl / Ango Media LLC</div>
+    <div class="stats">
+      <div class="stat stat-white"><div class="num">45</div><div class="label">Total Emails</div></div>
+      <div class="stat stat-red"><div class="num">5</div><div class="label">Need Attention</div></div>
+      <div class="stat stat-blue"><div class="num">7</div><div class="label">Brand Pitches</div></div>
+      <div class="stat stat-green"><div class="num">3</div><div class="label">Pending Payments</div></div>
+    </div>
   </div>
 </div>
 
 <div class="container">
 
   <!-- URGENT -->
-  <div class="card">
-    <div class="card-header urgent-header">🚨 Urgent — Action Required</div>
-    <div class="card-body">
-      <table>
-        <tr><th>Sender</th><th>Summary</th><th>Deadline</th><th>Action</th></tr>
-        <tr>
-          <td><strong>YouTube API Services Team</strong><br><span style="font-size:11px;color:#888">youtube-disputes@google.com</span></td>
-          <td>Third and <strong>FINAL</strong> notice for YouTube API compliance review. Must provide: (1) complete screencast of how API client retrieves channel metadata, keywords &amp; subscriber counts from competing channels, and (2) a sample analytics report.</td>
-          <td><span class="deadline">7 business days<br>(~Mar 25, 2026)</span></td>
-          <td>Reply with screencast + sample report ASAP. Failure to respond = request not approved. <span class="badge badge-red">Final Notice</span></td>
-        </tr>
-        <tr>
-          <td><strong>Rachel Li</strong> (Filmora / SSG Agency)<br><span style="font-size:11px;color:#888">rachel@ssgmcn.com</span></td>
-          <td>Contract signed — Rachel confirmed. Colleague Ariana (cc'd) will handle script/video review and share the brief. <strong>Rachel is asking for bank details to process the <span class="money">$500</span> payment.</strong></td>
-          <td><span class="deadline">ASAP</span><br><span style="font-size:11px">(Tight schedule per client)</span></td>
-          <td>Send bank details in the contract so they can process payment. <span class="badge badge-green">Paid</span> <span class="badge badge-yellow">Needs Bank Info</span></td>
-        </tr>
-      </table>
-    </div>
+  <div class="card urgent">
+    <div class="card-header">🚨 Urgent — Action Required <span class="count">2</span></div>
+    <table>
+      <tr><th style="width:22%">Sender</th><th style="width:42%">Summary</th><th style="width:16%">Deadline</th><th style="width:20%">Action</th></tr>
+      <tr>
+        <td><strong>YouTube API Services</strong><br><span class="email">youtube-disputes@google.com</span></td>
+        <td>Third and <strong>FINAL</strong> notice for API compliance review. Must provide a complete screencast showing how the API client retrieves channel metadata, keywords &amp; subscriber counts, plus a sample analytics report.</td>
+        <td><span class="deadline">~Mar 25</span><br><span class="badge badge-red">7 biz days</span></td>
+        <td>Reply with screencast + sample report. No more reminders after this.<br><span class="badge badge-red">Final Notice</span></td>
+      </tr>
+      <tr>
+        <td><strong>Rachel Li</strong><br><span class="email">rachel@ssgmcn.com</span><br>SSG Agency (Filmora)</td>
+        <td>Contract signed. Colleague Ariana will handle script/video review. <strong>Needs your bank details in the contract to process the <span class="money">$500</span> payment.</strong></td>
+        <td><span class="deadline">ASAP</span><br><span style="font-size:11px;color:#52525b">Tight client schedule</span></td>
+        <td><span class="badge badge-green">$500 Paid</span><br><span class="badge badge-yellow">Send Bank Info</span></td>
+      </tr>
+    </table>
   </div>
 
   <!-- WAITING ON ME -->
-  <div class="card">
-    <div class="card-header waiting-me-header">⏳ Waiting on Me — Ball's in My Court</div>
-    <div class="card-body">
-      <table>
-        <tr><th>Sender</th><th>What They Need From Me</th><th>Context</th><th>Priority</th></tr>
-        <tr>
-          <td><strong>Dorothea</strong> (Coupert)<br><span style="font-size:11px;color:#888">kol@coupert.com</span></td>
-          <td>Counter-offered: <span class="money">$800</span> for a ~3-min dedicated video (70% Coupert content). Waiting on Anjana's decision.</td>
-          <td>You proposed $500 for 90–120s integration. They want to upgrade to a dedicated format. Higher pay but more work.</td>
-          <td><span class="badge badge-green">$800 Paid</span> <span class="badge badge-blue">Decision Needed</span></td>
-        </tr>
-        <tr>
-          <td><strong>Abhishek Dixit</strong> (Video Editor)<br><span style="font-size:11px;color:#888">editor@abhishekdixit.org</span></td>
-          <td>Shared rates: $25–$40/min for long-form video editing. Waiting to hear if you want to work together.</td>
-          <td>You asked for rates for an 8–10 min video. He replied within minutes. Portfolio at abhishekdixit.framer.website. Seems professional.</td>
-          <td><span class="badge badge-gray">Low</span></td>
-        </tr>
-      </table>
-    </div>
+  <div class="card waiting-me">
+    <div class="card-header">⏳ Waiting on Me — Ball's in My Court <span class="count">2</span></div>
+    <table>
+      <tr><th style="width:22%">Sender</th><th style="width:40%">What They Need</th><th style="width:20%">Context</th><th style="width:18%">Priority</th></tr>
+      <tr>
+        <td><strong>Dorothea</strong><br><span class="email">kol@coupert.com</span><br>Coupert</td>
+        <td>Counter-offered <span class="money">$800</span> for a ~3 min dedicated video where Coupert is 70% of content. Waiting on your decision.</td>
+        <td>You proposed $500 for a 90–120s integration. Higher pay but more work.</td>
+        <td><span class="badge badge-green">$800</span><br><span class="badge badge-blue">Decision Needed</span></td>
+      </tr>
+      <tr>
+        <td><strong>Abhishek Dixit</strong><br><span class="email">editor@abhishekdixit.org</span><br>Freelance Editor</td>
+        <td>Shared rates: <strong>$25–$40/min</strong> for long-form editing. Waiting to hear if you want to proceed.</td>
+        <td>You asked for rates for an 8–10 min video.</td>
+        <td><span class="badge badge-gray">Low</span></td>
+      </tr>
+    </table>
   </div>
 
   <!-- WAITING ON THEM -->
-  <div class="card">
-    <div class="card-header waiting-them-header">✅ Waiting on Them — Ball's in Their Court</div>
-    <div class="card-body">
-      <table>
-        <tr><th>Sender</th><th>What I'm Waiting On</th><th>Status</th></tr>
-        <tr>
-          <td><strong>Mike McConnon</strong> (Perplexity)<br><span style="font-size:11px;color:#888">mike.mcconnon@perplexity.ai</span></td>
-          <td>Video approved ("no notes!"). You sent title ("Perplexity Computer vs Claude — This AI Agent Blew My Mind") + thumbnail. Waiting on final confirmation to schedule publish.</td>
-          <td><span class="badge badge-green">Approved</span> <span class="badge badge-blue">Ready to Publish</span></td>
-        </tr>
-        <tr>
-          <td><strong>Eileen</strong> (Maono)<br><span style="font-size:11px;color:#888">eileen@maono.com</span></td>
-          <td>Confirmed she'll pay via ACH using your bank info. You asked to be notified once payment is made. Invoice #3: <span class="money">$500</span> due Apr 14.</td>
-          <td><span class="badge badge-yellow">Payment Processing</span></td>
-        </tr>
-        <tr>
-          <td><strong>Sofia</strong> (Centrix / Paperlike)<br><span style="font-size:11px;color:#888">sofia@centrixspace.com</span></td>
-          <td>You sent Invoice #4 (<span class="money">$500</span>, due Apr 30) for 2nd video + reminded that 1st collab payment is still pending.</td>
-          <td><span class="badge badge-red">1st Payment Overdue</span> <span class="badge badge-yellow">2nd Invoice Sent</span></td>
-        </tr>
-        <tr>
-          <td><strong>Mathieu Brignon</strong> (Opera GX / The Node)<br><span style="font-size:11px;color:#888">mathieu@thenode.gg</span></td>
-          <td>You asked what entity name to expect on the wire transfer so you can identify the payment when it arrives.</td>
-          <td><span class="badge badge-yellow">Awaiting Reply</span></td>
-        </tr>
-        <tr>
-          <td><strong>Robert Davy</strong> (Makrwatch)<br><span style="font-size:11px;color:#888">talent@makrwatch.com</span></td>
-          <td>Call scheduled: <strong>Fri Mar 20, 8:00–8:30am PDT</strong>. Calendar invite sent.</td>
-          <td><span class="badge badge-green">Meeting Booked</span></td>
-        </tr>
-      </table>
-    </div>
+  <div class="card waiting-them">
+    <div class="card-header">✅ Waiting on Them — Ball's in Their Court <span class="count">5</span></div>
+    <table>
+      <tr><th style="width:22%">Sender</th><th style="width:48%">What I'm Waiting On</th><th style="width:30%">Status</th></tr>
+      <tr>
+        <td><strong>Mike McConnon</strong><br><span class="email">mike.mcconnon@perplexity.ai</span><br>Perplexity</td>
+        <td>Video approved ("no notes!"). You sent title + thumbnail. Waiting for final go-ahead to schedule publish.</td>
+        <td><span class="badge badge-green">Approved</span> <span class="badge badge-blue">Ready to Publish</span></td>
+      </tr>
+      <tr>
+        <td><strong>Eileen</strong><br><span class="email">eileen@maono.com</span><br>Maono</td>
+        <td>Confirmed she'll pay via ACH. You asked to be notified once sent. Invoice #3: <span class="money">$500</span> due Apr 14.</td>
+        <td><span class="badge badge-yellow">Payment Processing</span></td>
+      </tr>
+      <tr>
+        <td><strong>Sofia</strong><br><span class="email">sofia@centrixspace.com</span><br>Centrix / Paperlike</td>
+        <td>Invoice #4 sent (<span class="money">$500</span>, due Apr 30) for 2nd video. First collab payment still pending.</td>
+        <td><span class="badge badge-red">1st Overdue</span> <span class="badge badge-yellow">2nd Sent</span></td>
+      </tr>
+      <tr>
+        <td><strong>Mathieu Brignon</strong><br><span class="email">mathieu@thenode.gg</span><br>The Node / Opera GX</td>
+        <td>You asked what entity name to expect on the wire transfer.</td>
+        <td><span class="badge badge-yellow">Awaiting Reply</span></td>
+      </tr>
+      <tr>
+        <td><strong>Robert Davy</strong><br><span class="email">talent@makrwatch.com</span><br>Makrwatch</td>
+        <td>Call scheduled: <strong>Fri Mar 20, 8:00–8:30 AM PT</strong></td>
+        <td><span class="badge badge-green">Meeting Booked</span></td>
+      </tr>
+    </table>
   </div>
 
   <!-- NEW BRAND REQUESTS -->
-  <div class="card">
-    <div class="card-header brand-header">💼 New Brand / Collab Requests</div>
-    <div class="card-body">
-      <table>
-        <tr><th>Sender</th><th>Product</th><th>Offer</th><th>What They Want</th><th>Legitimacy</th><th>Notes</th></tr>
-        <tr>
-          <td><strong>Arlene</strong> (Inpander)<br><span style="font-size:11px;color:#888">arlene@inpander.com</span></td>
-          <td>Pippit AI — AI visual/creative asset generator</td>
-          <td><span class="badge badge-green">Paid</span> Asking for your rates</td>
-          <td>YT full video (3–10min) + IG Reel + TikTok. 60-day usage rights, link in bio, pin for 7 days</td>
-          <td><span class="badge badge-blue">Legit Agency</span></td>
-          <td>AI creative tool — fits your niche. Multi-platform ask, negotiate per-platform rates.</td>
-        </tr>
-        <tr>
-          <td><strong>Anna</strong> (MindSola)<br><span style="font-size:11px;color:#888">anna@mindsola.com</span></td>
-          <td>EMEET C960 Ultra — 4K webcam, aluminum design</td>
-          <td><span class="badge badge-green">Paid</span> Asking for your rates</td>
-          <td>8–10min dedicated <strong>or</strong> 3–5min integrated video. Post by <span class="deadline">Apr 13, 2026</span></td>
-          <td><span class="badge badge-blue">Legit Agency</span></td>
-          <td>Tech hardware — good niche fit. Product brief provided. Agency represents Anker, ByteDance, etc. Worth responding.</td>
-        </tr>
-        <tr>
-          <td><strong>Eden He</strong> (Vidu AI)<br><span style="font-size:11px;color:#888">kexianhe17@gmail.com</span></td>
-          <td>Vidu AI — AI video generation tool</td>
-          <td><span class="badge badge-green">Paid</span> Asking for rates across platforms</td>
-          <td>5–10min YT video + 60s TikTok/IG Reel + link in bio 14 days. Post end of March.</td>
-          <td><span class="badge badge-yellow">Moderate</span></td>
-          <td>Sent from Gmail, not company domain. AI tool fits niche. Ask for company verification before committing.</td>
-        </tr>
-        <tr>
-          <td><strong>Edcafe AI</strong> (Ausbert)<br><span style="font-size:11px;color:#888">bertedcafeai@gmail.com</span></td>
-          <td>Edcafe AI — teaching/creator tool</td>
-          <td><span class="badge badge-orange">Product Only</span> 1 year Premium ($179 value), no cash</td>
-          <td>Feature in a video + try the product</td>
-          <td><span class="badge badge-yellow">Indie</span></td>
-          <td>Follow-up email. Product-only, no cash — under $200 value. Education niche, not core tech/AI focus. <span class="badge badge-orange">Product Only, No Cash</span></td>
-        </tr>
-        <tr>
-          <td><strong>Mario / Claire</strong> (NoxInfluencer)<br><span style="font-size:11px;color:#888">@creator.noxinfluencer.com</span></td>
-          <td>DomoAI — AI image-to-video tool</td>
-          <td><span class="badge badge-green">Paid</span> Asking for rates</td>
-          <td>3–6min promotional YT video. 3 nearly identical emails sent.</td>
-          <td><span class="badge badge-red">Template Spam</span></td>
-          <td>3 separate emails from the same NoxInfluencer platform, different agent names, same product. Classic template blast. Typo in subject ("Coorperation"). Ignore.</td>
-        </tr>
-      </table>
-    </div>
+  <div class="card brand">
+    <div class="card-header">💼 New Brand / Collab Requests <span class="count">5</span></div>
+    <table>
+      <tr><th style="width:17%">Sender</th><th style="width:15%">Product</th><th style="width:12%">Offer</th><th style="width:20%">What They Want</th><th style="width:12%">Legitimacy</th><th style="width:24%">Notes</th></tr>
+      <tr>
+        <td><strong>Arlene</strong><br><span class="email">arlene@inpander.com</span><br>Inpander</td>
+        <td>Pippit AI<br><span class="email">AI creative tool</span></td>
+        <td><span class="badge badge-green">Paid</span><br>Asking rates</td>
+        <td>YT 3–10 min + IG Reel + TikTok. 60-day usage rights.</td>
+        <td><span class="badge badge-blue">Legit</span></td>
+        <td>AI tool, fits niche. Multi-platform — negotiate per-platform rates.</td>
+      </tr>
+      <tr>
+        <td><strong>Anna</strong><br><span class="email">anna@mindsola.com</span><br>MindSola</td>
+        <td>EMEET C960 Ultra<br><span class="email">4K webcam</span></td>
+        <td><span class="badge badge-green">Paid</span><br>Asking rates</td>
+        <td>8–10 min dedicated <em>or</em> 3–5 min integration. Post by <span class="deadline">Apr 13</span></td>
+        <td><span class="badge badge-blue">Legit</span></td>
+        <td>EMEET is established. Specific brief + timeline. Good fit.</td>
+      </tr>
+      <tr>
+        <td><strong>Eden He</strong><br><span class="email">kexianhe17@gmail.com</span><br>Vidu AI</td>
+        <td>Vidu<br><span class="email">AI video gen</span></td>
+        <td><span class="badge badge-green">Paid</span><br>Asking rates</td>
+        <td>5–10 min YT + TikTok/IG + link in bio 14 days. End of March.</td>
+        <td><span class="badge badge-yellow">Moderate</span></td>
+        <td>Personal Gmail, not company domain. Verify before committing.</td>
+      </tr>
+      <tr>
+        <td><strong>Ausbert</strong><br><span class="email">bertedcafeai@gmail.com</span><br>Edcafe AI</td>
+        <td>Edcafe AI<br><span class="email">Teaching tool</span></td>
+        <td><span class="badge badge-orange">Product Only</span><br>~$179 value</td>
+        <td>Feature video in exchange for 1 yr Premium access.</td>
+        <td><span class="badge badge-yellow">Indie</span></td>
+        <td>No cash. Education niche, not core focus. Easy pass.</td>
+      </tr>
+      <tr>
+        <td><strong>Mario / Claire</strong><br><span class="email">@noxinfluencer.com</span></td>
+        <td>DomoAI<br><span class="email">AI animation</span></td>
+        <td><span class="badge badge-green">Paid</span><br>Asking rates</td>
+        <td>3–6 min promo YT video. 3 identical emails sent.</td>
+        <td><span class="badge badge-red">Spam</span></td>
+        <td>Mass outreach, misspells "Coorperation." Ignore.</td>
+      </tr>
+    </table>
   </div>
 
   <!-- OUTREACH -->
-  <div class="card">
-    <div class="card-header outreach-header">💬 New Outreach / Viewer Messages</div>
-    <div class="card-body">
-      <table>
-        <tr><th>Sender</th><th>Summary</th><th>Vibe</th></tr>
-        <tr>
-          <td><strong>Bill</strong><br><span style="font-size:11px;color:#888">bill.dai2015@gmail.com</span></td>
-          <td>Indie developer who built PasteClean (pasteclean.app) — a tool that fixes formatting when pasting AI output. Watched your Claude Cowork video. Offering 30 days Pro free. Wants feedback or a potential feature.</td>
-          <td><span class="badge badge-purple">Genuine Fan</span> Friendly, not pushy. Relevant to your content.</td>
-        </tr>
-      </table>
-    </div>
+  <div class="card outreach">
+    <div class="card-header">💬 New Outreach / Viewer Messages <span class="count">1</span></div>
+    <table>
+      <tr><th style="width:22%">Sender</th><th style="width:52%">Summary</th><th style="width:26%">Vibe</th></tr>
+      <tr>
+        <td><strong>Bill Dai</strong><br><span class="email">bill.dai2015@gmail.com</span><br>PasteClean</td>
+        <td>Indie dev who watched your Claude Cowork video. Built PasteClean — fixes formatting when pasting AI outputs. Offering 30 days Pro free for an honest try.</td>
+        <td><span class="badge badge-purple">Genuine</span> Friendly, relevant to your AI content niche.</td>
+      </tr>
+    </table>
   </div>
 
   <!-- NOTIFICATIONS -->
-  <div class="card">
-    <div class="card-header notification-header">🔔 Notifications &amp; FYI</div>
-    <div class="card-body">
-      <table>
-        <tr><th>Source</th><th>What Happened</th><th>Type</th></tr>
-        <tr>
-          <td><strong>Google AdSense</strong></td>
-          <td>Bank account verified — you can now make and receive AdSense payments.</td>
-          <td><span class="badge badge-green">Payment Setup</span></td>
-        </tr>
-        <tr>
-          <td><strong>Neo / VideoPlus (Summer)</strong></td>
-          <td>Payment confirmed — made last Friday for the <span class="money">$2,500</span> dedicated video collab.</td>
-          <td><span class="badge badge-green">Payment Received</span></td>
-        </tr>
-        <tr>
-          <td><strong>Ango Media LLC (Wave)</strong></td>
-          <td>Invoice #3 sent to Maono — <span class="money">$500</span>, due Apr 14, 2026.</td>
-          <td><span class="badge badge-gray">Invoice</span></td>
-        </tr>
-        <tr>
-          <td><strong>Ango Media LLC (Wave)</strong></td>
-          <td>Invoice #4 sent to Centrix — <span class="money">$500</span>, due Apr 30, 2026.</td>
-          <td><span class="badge badge-gray">Invoice</span></td>
-        </tr>
-        <tr>
-          <td><strong>Google Security</strong></td>
-          <td>Security alert: Claude for Gmail was granted access to your Google Account.</td>
-          <td><span class="badge badge-gray">Security</span></td>
-        </tr>
-        <tr>
-          <td><strong>Makrwatch (Robert Davy)</strong></td>
-          <td>Calendar invite: Meeting Fri Mar 20, 8:00–8:30am PDT.</td>
-          <td><span class="badge badge-blue">Calendar</span></td>
-        </tr>
-      </table>
-    </div>
+  <div class="card notification">
+    <div class="card-header">🔔 Notifications &amp; FYI <span class="count">6</span></div>
+    <table>
+      <tr><th style="width:22%">Source</th><th style="width:56%">What Happened</th><th style="width:22%">Type</th></tr>
+      <tr>
+        <td><strong>Google AdSense</strong></td>
+        <td>Bank account verified — AdSense payments are now active.</td>
+        <td><span class="badge badge-green">Payment Setup</span></td>
+      </tr>
+      <tr>
+        <td><strong>Summer</strong><br><span class="email">VideoPlus (Neo)</span></td>
+        <td>Confirms <span class="money">$2,500</span> payment was sent last Friday. Check your bank.</td>
+        <td><span class="badge badge-green">Payment Received</span></td>
+      </tr>
+      <tr>
+        <td><strong>Wave</strong></td>
+        <td>Invoice #3 to Maono — <span class="money">$500</span>, due Apr 14.</td>
+        <td><span class="badge badge-gray">Invoice</span></td>
+      </tr>
+      <tr>
+        <td><strong>Wave</strong></td>
+        <td>Invoice #4 to Centrix — <span class="money">$500</span>, due Apr 30.</td>
+        <td><span class="badge badge-gray">Invoice</span></td>
+      </tr>
+      <tr>
+        <td><strong>Google</strong></td>
+        <td>Security alert: Claude for Gmail granted access to your account.</td>
+        <td><span class="badge badge-gray">Security</span></td>
+      </tr>
+      <tr>
+        <td><strong>Makrwatch</strong></td>
+        <td>Calendar invite: Fri Mar 20, 8:00–8:30 AM PT with Robert Davy.</td>
+        <td><span class="badge badge-blue">Calendar</span></td>
+      </tr>
+    </table>
   </div>
 
   <!-- SKIPPED -->
-  <div class="card">
-    <div class="card-header skip-header">🗑️ Skipped / Ignored</div>
+  <div class="card skip">
+    <div class="card-header">🗑️ Skipped / Ignored <span class="count">18</span></div>
     <div class="skip-body">
-      <strong>18 emails skipped</strong> — Promotional newsletters &amp; marketing blasts: Tock City Guides, Wave Team marketing (×2), Amazon Big Spring Sale, Zara, Pinterest, MotionVFX T&amp;C update, Grammarly upsell, NotebookLM, Brilliant, Adobe Lightroom, Coursera, Expedia, Explora Journeys, Etsy, HoneyBook, Educative. Also skipped: 2 editing service pitches (Harsh Srivastava — misspelled your name + placeholder text; Kashif Alam — classic "CAN I SEND?" template).
+      <strong>16 promotional emails</strong> — Tock Seattle, Wave Marketing (x2), Amazon Big Spring Sale, Zara, Pinterest, MotionVFX, Grammarly, NotebookLM, Brilliant, Adobe Lightroom, Coursera, Expedia, Explora Journeys, Etsy, HoneyBook, Educative.<br><br>
+      <strong>2 spam editing pitches</strong> — Harsh Srivastava (misspelled name + placeholder text), Kashif Alam (template pitch).
     </div>
   </div>
 
 </div>
+
+<div class="footer">Generated by Claude — Last updated March 16, 2026 at 8:00 AM PT</div>
 
 </body>
 </html>
